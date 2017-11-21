@@ -248,15 +248,29 @@
                      <Description>Start w32tm</Description>
                      <Order>25</Order>
                  </SynchronousCommand>
+                 <SynchronousCommand wcm:action="add">
+                      <CommandLine>cmd.exe /c "w32tm /resync"</CommandLine>
+                      <Description>Resync w32tm</Description>
+                      <Order>26</Order>
+                  </SynchronousCommand>
+                 <SynchronousCommand wcm:action="add">
+                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\fixnetwork.ps1 -AutoStart</CommandLine>
+                     <Description>Fix Network</Description>
+                     <Order>27</Order>
+                     <RequiresUserInput>true</RequiresUserInput>
+                 </SynchronousCommand>
                 <!-- WITHOUT WINDOWS UPDATES -->
+                <!--
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -File a:\openssh.ps1 -AutoStart</CommandLine>
                     <Description>Install OpenSSH</Description>
                     <Order>99</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
+              -->
                 <!-- END WITHOUT WINDOWS UPDATES -->
-                <!-- WITH WINDOWS UPDATES
+                <!-- WITH WINDOWS UPDATES -->
+                <!--
                 <SynchronousCommand wcm:action="add">
                     <CommandLine>cmd.exe /c a:\microsoft-updates.bat</CommandLine>
                     <Order>98</Order>
@@ -268,6 +282,7 @@
                     <Order>100</Order>
                     <RequiresUserInput>true</RequiresUserInput>
                 </SynchronousCommand>
+                -->
                 <!-- END WITH WINDOWS UPDATES -->
             </FirstLogonCommands>
             <OOBE>
