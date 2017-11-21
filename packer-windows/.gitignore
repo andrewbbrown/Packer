@@ -1,0 +1,5 @@
+.DS_Store
+/iso/*
+/*.box
+/packer_cache/
+/builds/*
