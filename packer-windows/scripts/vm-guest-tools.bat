@@ -1,30 +1,17 @@
-if not exist "C:\Windows\Temp\7z920-x64.msi" (
-    powershell -Command "(New-Object System.Net.WebClient).DownloadFile('http://www.7-zip.org/a/7z920-x64.msi', 'C:\Windows\Temp\7z920-x64.msi')" <NUL
-)
+:: download 7zip
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('http://www.7-zip.org/a/7z920-x64.msi', 'C:\Windows\Temp\7z920-x64.msi')" <NUL
+
+:: install 7zip
 msiexec /qb /i C:\Windows\Temp\7z920-x64.msi
 
-if "%PACKER_BUILDER_TYPE%" equ "vmware-iso" goto :vmware
-if "%PACKER_BUILDER_TYPE%" equ "virtualbox-iso" goto :virtualbox
-if "%PACKER_BUILDER_TYPE%" equ "parallels-iso" goto :parallels
-goto :done
+:: download latest tools
+powershell -Command "(New-Object System.Net.WebClient).DownloadFile('http://softwareupdate.vmware.com/cds/vmw-desktop/ws/12.0.0/2985596/windows/packages/tools-windows.tar', 'C:\Windows\Temp\vmware-tools.iso')" <NUL
 
-:vmware
+:: unzip tools iso
+cmd /c ""C:\Program Files\7-Zip\7z.exe" x "C:\Windows\Temp\vmware-tools.iso" -oC:\Windows\Temp\VMware"
 
-if exist "C:\Users\vagrant\windows.iso" (
-    move /Y C:\Users\vagrant\windows.iso C:\Windows\Temp
-)
-
-if not exist "C:\Windows\Temp\windows.iso" (
-    powershell -Command "(New-Object System.Net.WebClient).DownloadFile('http://softwareupdate.vmware.com/cds/vmw-desktop/ws/12.0.0/2985596/windows/packages/tools-windows.tar', 'C:\Windows\Temp\vmware-tools.tar')" <NUL
-    cmd /c ""C:\Program Files\7-Zip\7z.exe" x C:\Windows\Temp\vmware-tools.tar -oC:\Windows\Temp"
-    FOR /r "C:\Windows\Temp" %%a in (VMware-tools-windows-*.iso) DO REN "%%~a" "windows.iso"
-    rd /S /Q "C:\Program Files (x86)\VMWare"
-)
-
-cmd /c ""C:\Program Files\7-Zip\7z.exe" x "C:\Windows\Temp\windows.iso" -oC:\Windows\Temp\VMware"
+:: isntall vmware tools
 cmd /c C:\Windows\Temp\VMware\setup.exe /S /v"/qn REBOOT=R\"
 
-goto :done
-
-:done
+::uninstall 7zip
 msiexec /qb /x C:\Windows\Temp\7z920-x64.msi
