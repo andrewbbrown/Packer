@@ -1,5 +1,5 @@
 # Disable UAC
-Set-ItemProperty -Path "registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value 0
+#Set-ItemProperty -Path "registry::HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableLUA" -Value 0
 
 # Enable WinRM in Firewall for any remote address
 Enable-NetFirewallRule -DisplayGroup "Windows Remote Management"
